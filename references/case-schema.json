@@ -1,0 +1,534 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/cn-patent-case-workflow/case-json-1.0.schema.json",
+  "title": "CN Patent Case Master JSON",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "case",
+    "runtime_policy",
+    "source_materials",
+    "normalized",
+    "derived",
+    "control"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "case-json-1.0"
+    },
+    "case": {
+      "type": "object",
+      "required": [
+        "case_id"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "technical_domain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "runtime_policy": {
+      "type": "object",
+      "required": [
+        "default_transaction",
+        "external_read_requires"
+      ],
+      "properties": {
+        "default_transaction": {
+          "enum": [
+            "case_json_only",
+            "bootstrap_import",
+            "reimport_material",
+            "export_from_json"
+          ]
+        },
+        "external_read_requires": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "source_materials": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "import_batches": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "documents": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "evidence": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "search_results": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        }
+      }
+    },
+    "normalized": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "technical_facts": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "documents": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "claims": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "issues": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        },
+        "entities": {
+          "$ref": "#/$defs/legacyOrIndexedCollection"
+        }
+      }
+    },
+    "derived": {
+      "type": "object",
+      "required": [
+        "mbse",
+        "search",
+        "drafting",
+        "oa",
+        "audit"
+      ],
+      "properties": {
+        "mbse": {
+          "type": "object"
+        },
+        "search": {
+          "type": "object"
+        },
+        "drafting": {
+          "type": "object"
+        },
+        "oa": {
+          "type": "object"
+        },
+        "invalidity": {
+          "type": "object"
+        },
+        "audit": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": true
+    },
+    "control": {
+      "type": "object",
+      "required": [
+        "current_revision"
+      ],
+      "properties": {
+        "current_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "navigation": {
+          "type": "object"
+        },
+        "open_gates": {
+          "type": "array"
+        },
+        "pending_questions": {
+          "type": "array"
+        },
+        "conflicts": {
+          "type": "array"
+        },
+        "transactions": {
+          "type": "array"
+        },
+        "access_log": {
+          "type": "array"
+        },
+        "change_log": {
+          "type": "array"
+        },
+        "dependency_index": {
+          "type": "object"
+        },
+        "object_index": {
+          "$ref": "#/$defs/objectIndex"
+        },
+        "reverse_dependency_index": {
+          "$ref": "#/$defs/reverseDependencyIndex"
+        },
+        "view_status": {
+          "$ref": "#/$defs/viewStatus"
+        },
+        "active_route": {
+          "$ref": "#/$defs/routeSelection"
+        },
+        "route_confirmation": {
+          "$ref": "#/$defs/routeConfirmation"
+        },
+        "challenge_resolutions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/challengeResolution"
+          }
+        },
+        "access_log_summary": {
+          "$ref": "#/$defs/accessLogSummary"
+        },
+        "model_projection": {
+          "$ref": "#/$defs/safeProjection"
+        },
+        "projection_policy": {
+          "type": "object",
+          "properties": {
+            "forbidden_fields": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "raw_artifacts",
+                  "content_base64",
+                  "raw_artifact_base64"
+                ]
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "jsonPointer": {
+      "type": "string",
+      "pattern": "^/"
+    },
+    "stableId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "legacyOrIndexedCollection": {
+      "description": "业务集合可继续使用旧数组，也可逐步迁移为稳定 ID 映射加顺序数组。",
+      "oneOf": [
+        {
+          "type": "array"
+        },
+        {
+          "type": "object",
+          "required": [
+            "by_id",
+            "order"
+          ],
+          "properties": {
+            "by_id": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object"
+              }
+            },
+            "order": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/stableId"
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": true
+        }
+      ]
+    },
+    "objectIndex": {
+      "type": "object",
+      "description": "稳定实体 ID 到同一 case.json 内 JSON Pointer 的索引；只索引实体对象，不索引外部路径。",
+      "additionalProperties": {
+        "$ref": "#/$defs/jsonPointer"
+      }
+    },
+    "reverseDependencyIndex": {
+      "type": "object",
+      "description": "被依赖实体 ID 到直接依赖它的实体 ID 列表。",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "$ref": "#/$defs/stableId"
+        },
+        "uniqueItems": true
+      }
+    },
+    "viewStatus": {
+      "type": "object",
+      "description": "各业务视图的轻量状态摘要；详细对象和问题通过 ID 或 JSON Pointer 另行读取。",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "empty",
+              "fresh",
+              "working",
+              "stale",
+              "blocked",
+              "invalid"
+            ]
+          },
+          "active_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/stableId"
+            },
+            "uniqueItems": true
+          },
+          "open_gate_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pending_question_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason_ids": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/stableId"
+            },
+            "uniqueItems": true
+          },
+          "summary": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "routeSelection": {
+      "type": "object",
+      "required": [
+        "transaction",
+        "view",
+        "submode",
+        "profile",
+        "phase",
+        "domain"
+      ],
+      "properties": {
+        "route_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transaction": {
+          "enum": [
+            "bootstrap_import",
+            "case_json_only",
+            "reimport_material",
+            "export_from_json"
+          ]
+        },
+        "view": {
+          "enum": [
+            "mbse",
+            "search",
+            "drafting",
+            "oa",
+            "invalidity",
+            "audit"
+          ]
+        },
+        "submode": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "routeConfirmation": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "enum": ["pending", "confirmed", "challenge_required", "overridden", "rejected", "expired"]
+        },
+        "confirmation_id": {"type": "string", "minLength": 1},
+        "case_id": {"type": "string", "minLength": 1},
+        "base_revision": {"type": "integer", "minimum": 0},
+        "selected_route": {"$ref": "#/$defs/routeSelection"},
+        "ai_routing_assessment": {"type": "object"},
+        "confirmed_revision": {"type": "integer", "minimum": 0},
+        "confirmed_by": {"type": "string", "minLength": 1},
+        "confirmed_at": {"type": "string", "minLength": 1},
+        "challenge_ids": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/stableId"},
+          "uniqueItems": true
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {"status": {"const": "confirmed"}},
+            "required": ["status"]
+          },
+          "then": {
+            "required": [
+              "confirmation_id",
+              "case_id",
+              "base_revision",
+              "confirmed_revision",
+              "selected_route",
+              "confirmed_by",
+              "confirmed_at",
+              "challenge_ids"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": true
+    },    "challengeResolution": {
+      "type": "object",
+      "required": [
+        "challenge_id",
+        "severity",
+        "status"
+      ],
+      "properties": {
+        "challenge_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "severity": {
+          "enum": [
+            "hard",
+            "advisory"
+          ]
+        },
+        "status": {
+          "enum": [
+            "open",
+            "resolved",
+            "rejected",
+            "expired"
+          ]
+        },
+        "user_selection": {
+          "$ref": "#/$defs/routeSelection"
+        },
+        "ai_recommendation": {
+          "$ref": "#/$defs/routeSelection"
+        },
+        "resolution": {
+          "enum": [
+            "keep_user_selection",
+            "change_selection",
+            "cancel_transaction",
+            "supply_input"
+          ]
+        },
+        "resolved_by": {
+          "type": "string"
+        },
+        "resolved_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "override_reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "accessLogSummary": {
+      "type": "object",
+      "description": "访问日志的压缩摘要；不替代必要的逐事件审计记录。",
+      "properties": {
+        "window_start": {
+          "type": "string"
+        },
+        "window_end": {
+          "type": "string"
+        },
+        "event_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unique_path_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_level": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "by_operation": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "by_root": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "omitted_event_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "last_event_at": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "safeProjection": {
+      "type": "object",
+      "description": "模型投影契约：投影对象不得包含原始二进制或其 base64 内容。",
+      "not": {
+        "anyOf": [
+          {
+            "required": [
+              "raw_artifacts"
+            ]
+          },
+          {
+            "required": [
+              "content_base64"
+            ]
+          },
+          {
+            "required": [
+              "raw_artifact_base64"
+            ]
+          }
+        ]
+      },
+      "additionalProperties": true
+    }
+  }
+}
