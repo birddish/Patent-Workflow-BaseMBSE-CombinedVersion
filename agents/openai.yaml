@@ -1,0 +1,4 @@
+interface:
+  display_name: "中国专利案件统一工作流"
+  short_description: "单案件 JSON 驱动的专利代理视图与版本工作流"
+  default_prompt: "使用 $cn-patent-case-workflow，先明文选择 A/B/C/D 使用方式；需要业务处理时再确认 canonical 视图路由。若你的选择与 AI 判断或案件状态不一致，我会先提出质疑并暂停，之后只读取 case.json 的受控投影。"
