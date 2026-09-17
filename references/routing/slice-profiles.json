@@ -1,0 +1,62 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/slice-profiles-1.0.schema.json",
+  "schema_version": "slice-profiles-1.0",
+  "defaults": {
+    "max_output_chars": 16000,
+    "max_items": 50,
+    "evidence_hops": 1,
+    "max_excerpt_chars_per_source": 1200,
+    "exclude_fields": ["/source_materials/raw_artifacts", "/source_materials/*/content_base64", "/control/full_history"]
+  },
+  "profiles": {
+    "mbse.disclosure.standard": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/normalized/documents", "/derived/mbse"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "mbse.document.standard": {"pointers": ["/normalized/documents", "/normalized/claims", "/derived/mbse"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "mbse.search.standard": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/derived/mbse", "/derived/search"], "context_budget": {"max_output_chars": 12000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+
+    "search.novelty.quick": {"pointers": ["/normalized/technical_facts", "/normalized/claims", "/derived/mbse", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 10000, "max_items": 25, "evidence_hops": 1, "max_excerpt_chars_per_source": 800}},
+    "search.novelty.standard": {"pointers": ["/normalized/technical_facts", "/normalized/claims", "/derived/mbse", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "search.novelty.formal": {"pointers": ["/normalized/technical_facts", "/normalized/claims", "/derived/mbse", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 22000, "max_items": 80, "evidence_hops": 2, "max_excerpt_chars_per_source": 1600}},
+    "search.invalidity.quick": {"pointers": ["/normalized/claims", "/normalized/issues", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 10000, "max_items": 25, "evidence_hops": 1, "max_excerpt_chars_per_source": 800}},
+    "search.invalidity.standard": {"pointers": ["/normalized/claims", "/normalized/issues", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "search.invalidity.formal": {"pointers": ["/normalized/claims", "/normalized/issues", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 22000, "max_items": 80, "evidence_hops": 2, "max_excerpt_chars_per_source": 1600}},
+    "search.fto.quick": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/normalized/claims", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 10000, "max_items": 25, "evidence_hops": 1, "max_excerpt_chars_per_source": 800}},
+    "search.fto.standard": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/normalized/claims", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "search.fto.formal": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/normalized/claims", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 22000, "max_items": 80, "evidence_hops": 2, "max_excerpt_chars_per_source": 1600}},
+    "search.landscape.quick": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 10000, "max_items": 25, "evidence_hops": 1, "max_excerpt_chars_per_source": 800}},
+    "search.landscape.standard": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "search.landscape.formal": {"pointers": ["/normalized/technical_facts", "/normalized/entities", "/source_materials/search_results", "/derived/search"], "context_budget": {"max_output_chars": 22000, "max_items": 80, "evidence_hops": 2, "max_excerpt_chars_per_source": 1600}},
+
+    "drafting.stage1": {"pointers": ["/normalized/technical_facts", "/normalized/documents", "/derived/mbse"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "drafting.stage2": {"pointers": ["/derived/mbse", "/derived/search", "/normalized/technical_facts"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "drafting.stage3": {"pointers": ["/normalized/technical_facts", "/normalized/claims", "/derived/mbse", "/derived/search", "/derived/drafting"], "context_budget": {"max_output_chars": 18000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1400}},
+    "drafting.stage1_stage3_claim_core": {"pointers": ["/normalized/technical_facts", "/derived/mbse", "/derived/drafting"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "drafting.stage4": {"pointers": ["/normalized/technical_facts", "/derived/drafting"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "drafting.stage5": {"pointers": ["/normalized/technical_facts", "/normalized/documents", "/derived/drafting"], "context_budget": {"max_output_chars": 20000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1400}},
+    "drafting.stage6": {"pointers": ["/derived/drafting", "/normalized/documents"], "context_budget": {"max_output_chars": 12000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "drafting.stage7": {"pointers": ["/derived/drafting", "/normalized/documents"], "context_budget": {"max_output_chars": 12000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "drafting.stage8": {"pointers": ["/normalized/documents", "/normalized/claims", "/derived/drafting", "/derived/audit"], "context_budget": {"max_output_chars": 18000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "drafting.stage9": {"pointers": ["/derived/drafting", "/derived/oa", "/control/navigation"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+
+    "oa.opinion.phase_01": {"pointers": ["/normalized/documents", "/normalized/issues", "/control/navigation"], "context_budget": {"max_output_chars": 12000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "oa.opinion.phase_02": {"pointers": ["/normalized/documents", "/normalized/issues", "/normalized/claims", "/derived/oa"], "context_budget": {"max_output_chars": 14000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "oa.opinion.phase_03": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/mbse", "/derived/drafting", "/derived/oa"], "context_budget": {"max_output_chars": 18000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1400}},
+    "oa.opinion.phase_04": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/search", "/derived/drafting", "/derived/oa"], "context_budget": {"max_output_chars": 20000, "max_items": 60, "evidence_hops": 2, "max_excerpt_chars_per_source": 1400}},
+    "oa.opinion.phase_05": {"pointers": ["/derived/oa", "/derived/drafting", "/control/dependency_index", "/control/navigation"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "oa.reexamination.phase_01": {"pointers": ["/normalized/documents", "/normalized/issues", "/control/navigation"], "context_budget": {"max_output_chars": 12000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "oa.reexamination.phase_02": {"pointers": ["/normalized/documents", "/normalized/issues", "/normalized/claims", "/derived/oa"], "context_budget": {"max_output_chars": 14000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+    "oa.reexamination.phase_03": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/mbse", "/derived/drafting", "/derived/oa"], "context_budget": {"max_output_chars": 18000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1400}},
+    "oa.reexamination.phase_04": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/search", "/derived/drafting", "/derived/oa"], "context_budget": {"max_output_chars": 20000, "max_items": 60, "evidence_hops": 2, "max_excerpt_chars_per_source": 1400}},
+    "oa.reexamination.phase_05": {"pointers": ["/derived/oa", "/derived/drafting", "/control/dependency_index", "/control/navigation"], "context_budget": {"max_output_chars": 16000, "max_items": 50, "evidence_hops": 1, "max_excerpt_chars_per_source": 1200}},
+
+    "invalidity.defense.phase_01": {"pointers": ["/normalized/issues", "/normalized/claims", "/source_materials/documents", "/source_materials/evidence", "/control/navigation"], "context_budget": {"max_output_chars": 10000, "max_items": 25, "evidence_hops": 1, "max_excerpt_chars_per_source": 900}},
+    "invalidity.defense.phase_02": {"pointers": ["/normalized/issues", "/normalized/claims", "/normalized/documents", "/source_materials/evidence", "/derived/invalidity"], "context_budget": {"max_output_chars": 14000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 1100}},
+    "invalidity.defense.phase_03": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/mbse", "/derived/search", "/derived/invalidity"], "context_budget": {"max_output_chars": 18000, "max_items": 55, "evidence_hops": 2, "max_excerpt_chars_per_source": 1300}},
+    "invalidity.defense.phase_04": {"pointers": ["/normalized/issues", "/normalized/claims", "/derived/mbse", "/derived/search", "/derived/invalidity"], "context_budget": {"max_output_chars": 20000, "max_items": 60, "evidence_hops": 2, "max_excerpt_chars_per_source": 1400}},
+    "invalidity.defense.phase_05": {"pointers": ["/derived/invalidity", "/derived/drafting", "/control/dependency_index", "/control/navigation"], "context_budget": {"max_output_chars": 15000, "max_items": 45, "evidence_hops": 1, "max_excerpt_chars_per_source": 1100}},
+
+    "audit.l0": {"pointers": ["/case", "/control/navigation", "/control/current_revision", "/control/summary"], "context_budget": {"max_output_chars": 4000, "max_items": 20, "evidence_hops": 0, "max_excerpt_chars_per_source": 600}},
+    "audit.l1": {"pointers": ["/control/navigation", "/control/open_gates", "/control/pending_questions", "/control/conflicts", "/derived/audit"], "context_budget": {"max_output_chars": 10000, "max_items": 40, "evidence_hops": 1, "max_excerpt_chars_per_source": 800}},
+    "audit.l2": {"pointers": ["/control/change_log", "/control/access_log", "/derived/audit"], "context_budget": {"max_output_chars": 14000, "max_items": 60, "evidence_hops": 1, "max_excerpt_chars_per_source": 1000}},
+    "audit.l3": {"pointers": ["/control/dependency_index", "/derived/mbse", "/derived/search", "/derived/drafting", "/derived/oa", "/derived/audit"], "context_budget": {"max_output_chars": 30000, "max_items": 100, "evidence_hops": 2, "max_excerpt_chars_per_source": 1200}}
+  }
+}

@@ -1,0 +1,713 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/cn-patent-case-workflow/route-plan-1.0.schema.json",
+  "title": "CN Patent Case Workflow RoutePlan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "status",
+    "route_id",
+    "transaction",
+    "view",
+    "submode",
+    "profile",
+    "phase",
+    "domain",
+    "operation",
+    "selection",
+    "confirmation_id",
+    "base_revision",
+    "confirmation",
+    "read_profile",
+    "json_pointers",
+    "requested_ids",
+    "rule_files",
+    "conditional_rule_groups",
+    "conditional_rule_files",
+    "active_conditional_rule_files",
+    "forbidden_rule_groups",
+    "rule_file_budget",
+    "write_prefix",
+    "validators",
+    "context_budget",
+    "preconditions",
+    "errors",
+    "warnings",
+    "ai_routing_assessment",
+    "ai_suggestion_applied",
+    "routing_basis"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "route-plan-1.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "ready",
+        "confirmation_required",
+        "challenge_required",
+        "blocked"
+      ]
+    },
+    "route_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "transaction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "view": {
+      "type": "string",
+      "enum": [
+        "mbse",
+        "search",
+        "drafting",
+        "oa",
+        "invalidity",
+        "audit"
+      ]
+    },
+    "submode": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "phase": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "selection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transaction",
+        "view",
+        "submode",
+        "profile",
+        "phase",
+        "domain",
+        "operation"
+      ],
+      "properties": {
+        "transaction": {
+          "type": "string"
+        },
+        "view": {
+          "type": "string"
+        },
+        "submode": {
+          "type": "string"
+        },
+        "profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "domain": {
+          "type": "string"
+        },
+        "operation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "confirmation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "status",
+        "challenge_required",
+        "execution_allowed",
+        "ai_is_advisory",
+        "confirmation_id",
+        "base_revision",
+        "deferred"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "const": true
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "required",
+            "confirmed",
+            "challenge_required",
+            "blocked"
+          ]
+        },
+        "challenge_required": {
+          "type": "boolean"
+        },
+        "execution_allowed": {
+          "type": "boolean"
+        },
+        "ai_is_advisory": {
+          "type": "boolean",
+          "const": true
+        },
+        "confirmation_source": {
+          "type": "string"
+        },
+        "confirmation_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "base_revision": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "deferred": {
+          "type": "boolean"
+        }
+      }
+    },
+    "read_profile": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "json_pointers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^/"
+      },
+      "uniqueItems": true
+    },
+    "requested_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "rule_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true,
+      "maxItems": 4
+    },
+    "forbidden_rule_groups": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "write_prefix": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "validators": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "context_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_output_chars",
+        "max_items",
+        "evidence_hops",
+        "max_excerpt_chars_per_source",
+        "exclude_fields"
+      ],
+      "properties": {
+        "max_output_chars": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "max_items": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "evidence_hops": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_excerpt_chars_per_source": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "exclude_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "preconditions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "required_any",
+        "required_all",
+        "required_any_groups",
+        "missing_pointers",
+        "deferred"
+      ],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "satisfied",
+            "missing",
+            "deferred",
+            "not_checked"
+          ]
+        },
+        "required_any": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_all": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_any_groups": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "missing_pointers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "deferred": {
+          "type": "boolean"
+        }
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "severity",
+          "message"
+        ],
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "hard",
+              "advisory"
+            ]
+          },
+          "message": {
+            "type": "string"
+          },
+          "field": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "warnings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ai_routing_assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transaction",
+        "view",
+        "submode",
+        "profile",
+        "phase",
+        "domain",
+        "operation"
+      ],
+      "properties": {
+        "transaction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "view": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "submode": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "profile": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "domain": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operation": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ai_suggestion_applied": {
+      "type": "boolean",
+      "const": false
+    },
+    "routing_basis": {
+      "type": "string",
+      "const": "user_selection_only"
+    },
+    "operation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "conditional_rule_groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/conditionalRuleGroup"
+      },
+      "uniqueItems": true
+    },
+    "conditional_rule_files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/conditionalRuleFiles"
+      },
+      "uniqueItems": true
+    },
+    "active_conditional_rule_files": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "rule_file_budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base_limit",
+        "base_count",
+        "active_conditional_count",
+        "conditional_group_count"
+      ],
+      "properties": {
+        "base_limit": {
+          "type": "integer",
+          "const": 4
+        },
+        "base_count": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "active_conditional_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "conditional_group_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "confirmation_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "base_revision": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "ready"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "confirmation_id",
+          "base_revision"
+        ],
+        "properties": {
+          "confirmation_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "base_revision": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "confirmation": {
+            "properties": {
+              "status": {
+                "const": "confirmed"
+              },
+              "execution_allowed": {
+                "const": true
+              }
+            }
+          }
+        }
+      }
+    }
+  ],  "$defs": {
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "all": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/trigger"
+          }
+        },
+        "any": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/trigger"
+          }
+        },
+        "transaction_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "view_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "submode_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "profile_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "phase_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "domain_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "operation_in": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "transaction_equals": {
+          "type": "string"
+        },
+        "view_equals": {
+          "type": "string"
+        },
+        "submode_equals": {
+          "type": "string"
+        },
+        "profile_equals": {
+          "type": "string"
+        },
+        "phase_equals": {
+          "type": "string"
+        },
+        "domain_equals": {
+          "type": "string"
+        },
+        "operation_equals": {
+          "type": "string"
+        }
+      }
+    },
+    "conditionalRuleGroup": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "trigger",
+        "reason",
+        "rule_groups",
+        "active"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger": {
+          "$ref": "#/$defs/trigger"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_groups": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    },
+    "conditionalRuleFiles": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "trigger",
+        "reason",
+        "rule_groups",
+        "files",
+        "active"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "trigger": {
+          "$ref": "#/$defs/trigger"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "rule_groups": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "active": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

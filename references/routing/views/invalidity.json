@@ -1,0 +1,134 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "invalidity",
+  "allowed_domains": [
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "invalidity.{submode}.{profile}.{phase}",
+      "submode": "defense",
+      "profiles": [
+        "v2.1-invalidity"
+      ],
+      "phases": [
+        "phase_01",
+        "phase_02",
+        "phase_03",
+        "phase_04",
+        "phase_05"
+      ],
+      "read_profile": "invalidity.defense.{phase}",
+      "rule_groups": [
+        "invalidity.{phase}",
+        "core.version"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/audit"
+      ],
+      "phase_requirements": {
+        "phase_01": {
+          "required_any": [
+            "/normalized/issues",
+            "/normalized/claims",
+            "/source_materials/documents",
+            "/source_materials/evidence"
+          ]
+        },
+        "phase_02": {
+          "required_any_groups": [
+            [
+              "/normalized/issues",
+              "/source_materials/evidence"
+            ],
+            [
+              "/normalized/claims",
+              "/source_materials/documents"
+            ]
+          ]
+        },
+        "phase_03": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/normalized/claims",
+              "/derived/mbse",
+              "/derived/search"
+            ]
+          ]
+        },
+        "phase_04": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/derived/invalidity/issue_analysis",
+              "/derived/invalidity/traceability"
+            ]
+          ]
+        },
+        "phase_05": {
+          "required_any": [
+            "/derived/invalidity"
+          ]
+        }
+      },
+      "write_prefix": "/derived/invalidity",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "invalidity.defense.evidence",
+          "trigger": {
+            "phase_in": [
+              "phase_02",
+              "phase_03",
+              "phase_04"
+            ]
+          },
+          "reason": "仅在事实核实、MBSE追溯或逐理由陈述需要证据与推理控制时加载。",
+          "rule_groups": [
+            "invalidity.evidence"
+          ]
+        },
+        {
+          "id": "invalidity.defense.statement",
+          "trigger": {
+            "all": [
+              {
+                "phase_in": [
+                  "phase_04"
+                ]
+              },
+              {
+                "operation_in": [
+                  "statement",
+                  "opinion_drafting",
+                  "draft",
+                  "export"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 phase_04 且当前操作需要形成无效答辩意见陈述时加载经 MBSE 改造的对外模板。",
+          "rule_groups": [
+            "invalidity.statement"
+          ]
+        }
+      ]
+    }
+  ]
+}

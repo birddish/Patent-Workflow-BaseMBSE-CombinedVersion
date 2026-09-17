@@ -1,0 +1,156 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "audit",
+  "allowed_domains": [
+    "all",
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "audit.{submode}.{profile}.{phase}",
+      "submode": "status",
+      "profiles": [
+        "l0",
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "phases": [
+        "audit"
+      ],
+      "read_profile": "audit.{profile}",
+      "rule_groups": [
+        "audit.common"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [],
+      "required_all": [],
+      "write_prefix": "/derived/audit",
+      "validators": [
+        "validate_case_json.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "audit.{submode}.{profile}.{phase}",
+      "submode": "consistency",
+      "profiles": [
+        "l0",
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "phases": [
+        "audit"
+      ],
+      "read_profile": "audit.{profile}",
+      "rule_groups": [
+        "audit.common",
+        "audit.consistency"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/control/dependency_index",
+        "/derived/audit"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/audit",
+      "validators": [
+        "validate_case_json.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "audit.{submode}.{profile}.{phase}",
+      "submode": "ownership",
+      "profiles": [
+        "l0",
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "phases": [
+        "audit"
+      ],
+      "read_profile": "audit.{profile}",
+      "rule_groups": [
+        "audit.common",
+        "audit.ownership"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/control/change_log",
+        "/control/access_log",
+        "/control/navigation"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/audit",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "audit.{submode}.{profile}.{phase}",
+      "submode": "dependencies",
+      "profiles": [
+        "l0",
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "phases": [
+        "audit"
+      ],
+      "read_profile": "audit.{profile}",
+      "rule_groups": [
+        "audit.common",
+        "audit.dependencies"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/control/dependency_index",
+        "/derived/mbse",
+        "/derived/search",
+        "/derived/drafting",
+        "/derived/oa"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/audit",
+      "validators": [
+        "validate_case_json.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    }
+  ]
+}

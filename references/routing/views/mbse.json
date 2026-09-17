@@ -1,0 +1,250 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "mbse",
+  "allowed_domains": [
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "mbse.disclosure.{profile}.{phase}",
+      "submode": "disclosure",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "modeling"
+      ],
+      "default_profile": "standard",
+      "default_phase": "modeling",
+      "read_profile": "mbse.disclosure.standard",
+      "rule_groups": [
+        "mbse.framework",
+        "mbse.disclosure"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/source_materials/documents"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/mbse",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "mbse.disclosure.evidence_rules",
+          "trigger": {
+            "operation_in": [
+              "map_evidence",
+              "map_search_evidence",
+              "map_claim_or_chain_evidence",
+              "build_patent_evidence_pack",
+              "evidence_audit"
+            ]
+          },
+          "reason": "仅在当前操作需要统一证据状态、证据映射或证据审计时加载。",
+          "rule_groups": [
+            "mbse.evidence_rules"
+          ]
+        },
+        {
+          "id": "mbse.disclosure.claim_mapping",
+          "trigger": {
+            "operation_in": [
+              "candidate_claim_bridge",
+              "claim_support_bridge",
+              "map_claim_or_chain_evidence",
+              "claim_mapping"
+            ]
+          },
+          "reason": "仅在当前操作需要把 MBSE 对象映射到权利要求或保护候选时加载。",
+          "rule_groups": [
+            "mbse.claim_mapping"
+          ]
+        },
+        {
+          "id": "mbse.disclosure.evidence_pack",
+          "trigger": {
+            "operation_in": [
+              "build_patent_evidence_pack"
+            ]
+          },
+          "reason": "仅在明确生成 patent_evidence_pack 时加载证据包规则。",
+          "rule_groups": [
+            "mbse.evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "mbse.document.{profile}.{phase}",
+      "submode": "document",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "modeling"
+      ],
+      "default_profile": "standard",
+      "default_phase": "modeling",
+      "read_profile": "mbse.document.standard",
+      "rule_groups": [
+        "mbse.framework",
+        "mbse.document"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/normalized/documents",
+        "/source_materials/documents"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/mbse",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "mbse.document.evidence_rules",
+          "trigger": {
+            "operation_in": [
+              "map_evidence",
+              "map_search_evidence",
+              "map_claim_or_chain_evidence",
+              "build_patent_evidence_pack",
+              "evidence_audit"
+            ]
+          },
+          "reason": "仅在当前操作需要统一证据状态、证据映射或证据审计时加载。",
+          "rule_groups": [
+            "mbse.evidence_rules"
+          ]
+        },
+        {
+          "id": "mbse.document.claim_mapping",
+          "trigger": {
+            "operation_in": [
+              "candidate_claim_bridge",
+              "claim_support_bridge",
+              "map_claim_or_chain_evidence",
+              "claim_mapping"
+            ]
+          },
+          "reason": "仅在当前操作需要把 MBSE 对象映射到权利要求或保护候选时加载。",
+          "rule_groups": [
+            "mbse.claim_mapping"
+          ]
+        },
+        {
+          "id": "mbse.document.evidence_pack",
+          "trigger": {
+            "operation_in": [
+              "build_patent_evidence_pack"
+            ]
+          },
+          "reason": "仅在明确生成 patent_evidence_pack 时加载证据包规则。",
+          "rule_groups": [
+            "mbse.evidence"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "mbse.search.{profile}.{phase}",
+      "submode": "search",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "modeling"
+      ],
+      "default_profile": "standard",
+      "default_phase": "modeling",
+      "read_profile": "mbse.search.standard",
+      "rule_groups": [
+        "mbse.framework",
+        "mbse.search"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/drafting",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/normalized/entities",
+        "/derived/mbse"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/mbse",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "mbse.search.evidence_rules",
+          "trigger": {
+            "operation_in": [
+              "map_evidence",
+              "map_search_evidence",
+              "map_claim_or_chain_evidence",
+              "build_patent_evidence_pack",
+              "evidence_audit"
+            ]
+          },
+          "reason": "仅在当前操作需要统一证据状态、证据映射或证据审计时加载。",
+          "rule_groups": [
+            "mbse.evidence_rules"
+          ]
+        },
+        {
+          "id": "mbse.search.claim_mapping",
+          "trigger": {
+            "operation_in": [
+              "candidate_claim_bridge",
+              "claim_support_bridge",
+              "map_claim_or_chain_evidence",
+              "claim_mapping"
+            ]
+          },
+          "reason": "仅在当前操作需要把 MBSE 对象映射到权利要求或保护候选时加载。",
+          "rule_groups": [
+            "mbse.claim_mapping"
+          ]
+        },
+        {
+          "id": "mbse.search.evidence_pack",
+          "trigger": {
+            "operation_in": [
+              "build_patent_evidence_pack"
+            ]
+          },
+          "reason": "仅在明确生成 patent_evidence_pack 时加载证据包规则。",
+          "rule_groups": [
+            "mbse.evidence"
+          ]
+        }
+      ]
+    }
+  ]
+}

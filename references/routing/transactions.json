@@ -1,0 +1,50 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/transactions-1.0.schema.json",
+  "schema_version": "route-transactions-1.0",
+  "transactions": {
+    "bootstrap_import": {
+      "description": "从明确列出的外部材料建立案件主 JSON",
+      "case_required": false,
+      "case_must_be_absent": true,
+      "materials_required": true,
+      "external_read": "allowed",
+      "allowed_views": ["mbse", "search", "drafting", "oa", "invalidity", "audit"],
+      "write_prefix": "/source_materials",
+      "confirmation_required": true,
+      "hard_conflicts": ["existing_case", "materials_not_listed"]
+    },
+    "case_json_only": {
+      "description": "只从已经存在的主 JSON 读取、计算和写回",
+      "case_required": true,
+      "case_must_be_absent": false,
+      "materials_required": false,
+      "external_read": "forbidden",
+      "allowed_views": ["mbse", "search", "drafting", "oa", "invalidity", "audit"],
+      "write_prefix": "view_owned",
+      "confirmation_required": true,
+      "hard_conflicts": ["missing_case", "external_read_requested"]
+    },
+    "reimport_material": {
+      "description": "在保留旧导入批次的前提下明确重新导入或合并外部材料",
+      "case_required": true,
+      "case_must_be_absent": false,
+      "materials_required": true,
+      "external_read": "allowed",
+      "allowed_views": ["mbse", "search", "drafting", "oa", "invalidity", "audit"],
+      "write_prefix": "/source_materials",
+      "confirmation_required": true,
+      "hard_conflicts": ["missing_case", "materials_not_listed"]
+    },
+    "export_from_json": {
+      "description": "只从主 JSON 生成当前已确认视图的输出",
+      "case_required": true,
+      "case_must_be_absent": false,
+      "materials_required": false,
+      "external_read": "forbidden",
+      "allowed_views": ["mbse", "search", "drafting", "oa", "invalidity", "audit"],
+      "write_prefix": null,
+      "confirmation_required": true,
+      "hard_conflicts": ["missing_case", "external_read_requested"]
+    }
+  }
+}

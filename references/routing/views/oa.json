@@ -1,0 +1,292 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "oa",
+  "allowed_domains": [
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "oa.{submode}.{profile}.{phase}",
+      "submode": "opinion",
+      "profiles": [
+        "v2.1-oa"
+      ],
+      "phases": [
+        "phase_01",
+        "phase_02",
+        "phase_03",
+        "phase_04",
+        "phase_05"
+      ],
+      "default_profile": "v2.1-oa",
+      "read_profile": "oa.opinion.{phase}",
+      "rule_groups": [
+        "oa.intake",
+        "oa.{phase}",
+        "oa.version"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting"
+      ],
+      "phase_requirements": {
+        "phase_01": {
+          "required_any": [
+            "/normalized/documents",
+            "/normalized/issues",
+            "/source_materials/documents"
+          ]
+        },
+        "phase_02": {
+          "required_any_groups": [
+            [
+              "/normalized/issues",
+              "/source_materials/documents"
+            ],
+            [
+              "/normalized/documents"
+            ]
+          ]
+        },
+        "phase_03": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/normalized/claims",
+              "/derived/drafting"
+            ]
+          ]
+        },
+        "phase_04": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/normalized/claims",
+              "/derived/drafting"
+            ]
+          ]
+        },
+        "phase_05": {
+          "required_any": [
+            "/derived/oa",
+            "/derived/drafting"
+          ]
+        }
+      },
+      "write_prefix": "/derived/oa",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "oa.opinion.general",
+          "trigger": {
+            "operation_in": [
+              "intake",
+              "readiness",
+              "review",
+              "response",
+              "reexamination",
+              "audit"
+            ]
+          },
+          "reason": "仅在当前操作需要 OA 总体流程、准入或复核治理时加载。",
+          "rule_groups": [
+            "oa.general"
+          ]
+        },
+        {
+          "id": "oa.opinion.evidence",
+          "trigger": {
+            "operation_in": [
+              "evidence",
+              "fact_audit",
+              "traceability",
+              "opinion_drafting",
+              "audit"
+            ]
+          },
+          "reason": "仅在当前操作需要证据包、事实核验或证据推理控制时加载。",
+          "rule_groups": [
+            "oa.evidence"
+          ]
+        },
+        {
+          "id": "oa.opinion.inventive_step",
+          "trigger": {
+            "all": [
+              {
+                "phase_in": [
+                  "phase_03",
+                  "phase_04"
+                ]
+              },
+              {
+                "operation_in": [
+                  "novelty",
+                  "inventive_step",
+                  "traceability",
+                  "opinion_drafting"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 phase 03/04 且当前操作涉及新颖性或创造性映射时加载。",
+          "rule_groups": [
+            "oa.inventive_step"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "oa.{submode}.{profile}.{phase}",
+      "submode": "reexamination",
+      "profiles": [
+        "v2.1-oa"
+      ],
+      "phases": [
+        "phase_01",
+        "phase_02",
+        "phase_03",
+        "phase_04",
+        "phase_05"
+      ],
+      "default_profile": "v2.1-oa",
+      "read_profile": "oa.reexamination.{phase}",
+      "rule_groups": [
+        "oa.intake",
+        "oa.{phase}",
+        "oa.version"
+      ],
+      "forbidden_rule_groups": [
+        "views/mbse",
+        "views/search",
+        "views/drafting"
+      ],
+      "phase_requirements": {
+        "phase_01": {
+          "required_any": [
+            "/normalized/documents",
+            "/normalized/issues",
+            "/source_materials/documents"
+          ]
+        },
+        "phase_02": {
+          "required_any_groups": [
+            [
+              "/normalized/issues",
+              "/source_materials/documents"
+            ],
+            [
+              "/normalized/documents"
+            ]
+          ]
+        },
+        "phase_03": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/normalized/claims",
+              "/derived/drafting"
+            ]
+          ]
+        },
+        "phase_04": {
+          "required_any_groups": [
+            [
+              "/normalized/issues"
+            ],
+            [
+              "/normalized/claims",
+              "/derived/drafting"
+            ]
+          ]
+        },
+        "phase_05": {
+          "required_any": [
+            "/derived/oa",
+            "/derived/drafting"
+          ]
+        }
+      },
+      "write_prefix": "/derived/oa",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "oa.reexamination.general",
+          "trigger": {
+            "operation_in": [
+              "intake",
+              "readiness",
+              "review",
+              "response",
+              "reexamination",
+              "audit"
+            ]
+          },
+          "reason": "仅在当前操作需要 OA 总体流程、准入或复核治理时加载。",
+          "rule_groups": [
+            "oa.general"
+          ]
+        },
+        {
+          "id": "oa.reexamination.evidence",
+          "trigger": {
+            "operation_in": [
+              "evidence",
+              "fact_audit",
+              "traceability",
+              "opinion_drafting",
+              "audit"
+            ]
+          },
+          "reason": "仅在当前操作需要证据包、事实核验或证据推理控制时加载。",
+          "rule_groups": [
+            "oa.evidence"
+          ]
+        },
+        {
+          "id": "oa.reexamination.inventive_step",
+          "trigger": {
+            "all": [
+              {
+                "phase_in": [
+                  "phase_03",
+                  "phase_04"
+                ]
+              },
+              {
+                "operation_in": [
+                  "novelty",
+                  "inventive_step",
+                  "traceability",
+                  "opinion_drafting"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 phase 03/04 且当前操作涉及新颖性或创造性映射时加载。",
+          "rule_groups": [
+            "oa.inventive_step"
+          ]
+        }
+      ]
+    }
+  ]
+}

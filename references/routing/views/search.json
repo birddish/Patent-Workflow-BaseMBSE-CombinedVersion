@@ -1,0 +1,360 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "search",
+  "allowed_domains": [
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "search.{submode}.{profile}.{phase}",
+      "submode": "novelty",
+      "profiles": [
+        "quick",
+        "standard",
+        "formal"
+      ],
+      "phases": [
+        "search"
+      ],
+      "read_profile": "search.novelty.{profile}",
+      "rule_groups": [
+        "search.common",
+        "search.novelty",
+        "search.delivery"
+      ],
+      "forbidden_rule_groups": [
+        "views/oa",
+        "views/invalidity",
+        "views/drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/normalized/claims",
+        "/derived/mbse"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/search",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "search.novelty.review",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "standard",
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "review",
+                  "screen_review",
+                  "compare",
+                  "report",
+                  "supplement"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在需要复核、对比、报告或补充筛选时加载 review 规则。",
+          "rule_groups": [
+            "search.review"
+          ]
+        },
+        {
+          "id": "search.novelty.handoff",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "handoff",
+                  "formal_handoff",
+                  "report"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 formal 路由明确要求正式交接或报告输出时加载 handoff 模板。",
+          "rule_groups": [
+            "search.handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "search.{submode}.{profile}.{phase}",
+      "submode": "invalidity",
+      "profiles": [
+        "quick",
+        "standard",
+        "formal"
+      ],
+      "phases": [
+        "search"
+      ],
+      "read_profile": "search.invalidity.{profile}",
+      "rule_groups": [
+        "search.common",
+        "search.invalidity",
+        "search.delivery"
+      ],
+      "forbidden_rule_groups": [
+        "views/oa",
+        "views/invalidity",
+        "views/drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [],
+      "required_all": [],
+      "required_any_groups": [
+        [
+          "/normalized/claims"
+        ],
+        [
+          "/source_materials/search_results",
+          "/derived/search"
+        ]
+      ],
+      "write_prefix": "/derived/search",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "search.invalidity.review",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "standard",
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "review",
+                  "screen_review",
+                  "compare",
+                  "report",
+                  "supplement"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在需要复核、对比、报告或补充筛选时加载 review 规则。",
+          "rule_groups": [
+            "search.review"
+          ]
+        },
+        {
+          "id": "search.invalidity.handoff",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "handoff",
+                  "formal_handoff",
+                  "report"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 formal 路由明确要求正式交接或报告输出时加载 handoff 模板。",
+          "rule_groups": [
+            "search.handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "search.{submode}.{profile}.{phase}",
+      "submode": "FTO",
+      "profiles": [
+        "quick",
+        "standard",
+        "formal"
+      ],
+      "phases": [
+        "search"
+      ],
+      "read_profile": "search.fto.{profile}",
+      "rule_groups": [
+        "search.common",
+        "search.fto",
+        "search.delivery"
+      ],
+      "forbidden_rule_groups": [
+        "views/oa",
+        "views/invalidity",
+        "views/drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [
+        "/normalized/claims",
+        "/normalized/entities",
+        "/normalized/technical_facts"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/search",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "search.FTO.review",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "standard",
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "review",
+                  "screen_review",
+                  "compare",
+                  "report",
+                  "supplement"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在需要复核、对比、报告或补充筛选时加载 review 规则。",
+          "rule_groups": [
+            "search.review"
+          ]
+        },
+        {
+          "id": "search.FTO.handoff",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "handoff",
+                  "formal_handoff",
+                  "report"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 formal 路由明确要求正式交接或报告输出时加载 handoff 模板。",
+          "rule_groups": [
+            "search.handoff"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "search.{submode}.{profile}.{phase}",
+      "submode": "landscape",
+      "profiles": [
+        "quick",
+        "standard",
+        "formal"
+      ],
+      "phases": [
+        "search"
+      ],
+      "read_profile": "search.landscape.{profile}",
+      "rule_groups": [
+        "search.common",
+        "search.landscape",
+        "search.delivery"
+      ],
+      "forbidden_rule_groups": [
+        "views/oa",
+        "views/invalidity",
+        "views/drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/normalized/entities"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/search",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "search.landscape.review",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "standard",
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "review",
+                  "screen_review",
+                  "compare",
+                  "report",
+                  "supplement"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在需要复核、对比、报告或补充筛选时加载 review 规则。",
+          "rule_groups": [
+            "search.review"
+          ]
+        },
+        {
+          "id": "search.landscape.handoff",
+          "trigger": {
+            "all": [
+              {
+                "profile_in": [
+                  "formal"
+                ]
+              },
+              {
+                "operation_in": [
+                  "handoff",
+                  "formal_handoff",
+                  "report"
+                ]
+              }
+            ]
+          },
+          "reason": "仅在 formal 路由明确要求正式交接或报告输出时加载 handoff 模板。",
+          "rule_groups": [
+            "search.handoff"
+          ]
+        }
+      ]
+    }
+  ]
+}

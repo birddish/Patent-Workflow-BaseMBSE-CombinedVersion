@@ -1,0 +1,225 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/rule-registry-1.0.schema.json",
+  "schema_version": "rule-registry-1.0",
+  "groups": {
+    "core.authority": [
+      "references/core/authority-and-status.md"
+    ],
+    "core.patch": [
+      "references/core/patch-policy.md",
+      "references/case-writeback-contract.md"
+    ],
+    "core.version": [
+      "references/case-version-control.md"
+    ],
+    "core.confirmation": [
+      "references/mandatory-mode-confirmation.md"
+    ],
+    "mbse.common": [
+      "references/views/mbse/mbse-framework.md",
+      "references/views/mbse/unified-evidence-rules.md"
+    ],
+    "mbse.framework": [
+      "references/views/mbse/mbse-framework.md"
+    ],
+    "mbse.evidence_rules": [
+      "references/views/mbse/unified-evidence-rules.md"
+    ],
+    "mbse.disclosure": [
+      "references/views/mbse/modes/mode-disclosure.md"
+    ],
+    "mbse.document": [
+      "references/views/mbse/modes/mode-document.md",
+      "references/views/mbse/document-comparison-guide.md"
+    ],
+    "mbse.search": [
+      "references/views/mbse/modes/mode-search.md",
+      "references/views/mbse/search-bridge-guide.md"
+    ],
+    "mbse.claim_mapping": [
+      "references/views/mbse/claim-semantic-bridge.md"
+    ],
+    "mbse.evidence": [
+      "references/views/mbse/patent-evidence-pack.md"
+    ],
+    "search.common": [
+      "references/views/search/search-guide.md",
+      "references/views/search/cn-search-guide.md"
+    ],
+    "search.novelty": [
+      "references/views/search/mode-novelty.md"
+    ],
+    "search.invalidity": [
+      "references/views/search/mode-invalidity.md"
+    ],
+    "search.fto": [
+      "references/views/search/mode-fto.md"
+    ],
+    "search.landscape": [
+      "references/views/search/mode-landscape.md"
+    ],
+    "search.delivery": [
+      "references/views/search/delivery-profiles.md"
+    ],
+    "search.quick": [
+      "references/views/search/delivery-profiles.md"
+    ],
+    "search.standard": [
+      "references/views/search/delivery-profiles.md",
+      "references/views/search/review-prompt.md"
+    ],
+    "search.formal": [
+      "references/views/search/delivery-profiles.md",
+      "references/views/search/review-prompt.md",
+      "references/views/search/handoff-templates.md"
+    ],
+    "search.review": [
+      "references/views/search/review-prompt.md"
+    ],
+    "search.handoff": [
+      "references/views/search/handoff-templates.md"
+    ],
+    "drafting.common": [
+      "references/views/drafting/common-constraints.md",
+      "references/views/drafting/drafting-guardrails.md"
+    ],
+    "drafting.stage1": [
+      "references/views/drafting/stage-1-mbse-modeling.md"
+    ],
+    "drafting.stage2": [
+      "references/views/drafting/stage-2-search-and-comparison.md"
+    ],
+    "drafting.stage3": [
+      "references/views/drafting/stage-3-claim-drafting.md"
+    ],
+    "drafting.stage4": [
+      "references/views/drafting/stage-4-background-technology.md"
+    ],
+    "drafting.stage5": [
+      "references/views/drafting/stage-5-detailed-description.md"
+    ],
+    "drafting.stage6": [
+      "references/views/drafting/stage-6-figure-markdown.md"
+    ],
+    "drafting.stage7": [
+      "references/views/drafting/stage-7-vsdx-production.md"
+    ],
+    "drafting.stage8": [
+      "references/views/drafting/stage-8-existing-application-audit.md"
+    ],
+    "drafting.stage9": [
+      "references/views/drafting/stage-9-prosecution-handoff.md"
+    ],
+    "drafting.claim_core": [
+      "references/views/drafting/protectable-unit-contract.md",
+      "references/views/drafting/claim-text-audit.md"
+    ],
+    "drafting.claim_contract": [
+      "references/views/drafting/protectable-unit-contract.md"
+    ],
+    "drafting.claim_audit": [
+      "references/views/drafting/claim-text-audit.md"
+    ],
+    "drafting.traceability": [
+      "references/views/drafting/dependent-claim-traceability.md",
+      "references/views/drafting/node-claim-mapping.md"
+    ],
+    "oa.common": [
+      "references/views/oa/general-workflow.md",
+      "references/views/oa/intake-and-readiness-gates.md"
+    ],
+    "oa.general": [
+      "references/views/oa/general-workflow.md"
+    ],
+    "oa.intake": [
+      "references/views/oa/intake-and-readiness-gates.md"
+    ],
+    "oa.phase1": [
+      "references/views/oa/phase-1-mbse-modeling.md"
+    ],
+    "oa.phase2": [
+      "references/views/oa/phase-2-fact-audit.md"
+    ],
+    "oa.phase3": [
+      "references/views/oa/phase-3-traceability-analysis.md"
+    ],
+    "oa.phase4": [
+      "references/views/oa/phase-4-opinion-drafting.md",
+      "references/views/oa/oa-direct-content-rules.md"
+    ],
+    "oa.phase5": [
+      "references/views/oa/phase-5-opinion-audit.md",
+      "references/views/oa/output-checklist.md"
+    ],
+    "oa.phase_01": [
+      "references/views/oa/phase-1-mbse-modeling.md"
+    ],
+    "oa.phase_02": [
+      "references/views/oa/phase-2-fact-audit.md"
+    ],
+    "oa.phase_03": [
+      "references/views/oa/phase-3-traceability-analysis.md"
+    ],
+    "oa.phase_04": [
+      "references/views/oa/phase-4-opinion-drafting.md",
+      "references/views/oa/oa-direct-content-rules.md"
+    ],
+    "oa.phase_05": [
+      "references/views/oa/phase-5-opinion-audit.md",
+      "references/views/oa/output-checklist.md"
+    ],
+    "oa.version": [
+      "references/views/oa/version-and-recalculation-gates.md"
+    ],
+    "oa.inventive_step": [
+      "references/views/oa/mbse-novelty-inventive-step-mapping.md"
+    ],
+    "oa.evidence": [
+      "references/views/oa/evidence-and-inference-control.md",
+      "references/views/oa/oa-evidence-pack-schema.md"
+    ],
+    "invalidity.phase_01": [
+      "references/views/invalidity/phase-1-intake.md"
+    ],
+    "invalidity.phase_02": [
+      "references/views/invalidity/phase-2-fact-verification.md"
+    ],
+    "invalidity.phase_03": [
+      "references/views/invalidity/phase-3-mbse-traceability.md"
+    ],
+    "invalidity.phase_04": [
+      "references/views/invalidity/phase-4-statement.md"
+    ],
+    "invalidity.phase_05": [
+      "references/views/invalidity/phase-5-delivery-gate.md"
+    ],
+    "invalidity.evidence": [
+      "references/views/invalidity/evidence-and-inference-control.md"
+    ],
+    "invalidity.statement": [
+      "references/views/invalidity/templates/invalidation-defense.md"
+    ],
+    "audit.common": [
+      "references/case-schema.md",
+      "references/core/authority-and-status.md"
+    ],
+    "audit.consistency": [
+      "references/case-version-control.md",
+      "references/views/drafting/state-and-version-control.md"
+    ],
+    "audit.ownership": [
+      "references/core/patch-policy.md",
+      "references/case-writeback-contract.md"
+    ],
+    "audit.dependencies": [
+      "references/case-version-control.md",
+      "references/views/oa/version-and-recalculation-gates.md"
+    ],
+    "drafting.common_core": [
+      "references/views/drafting/common-constraints.md"
+    ],
+    "drafting.guardrails": [
+      "references/views/drafting/drafting-guardrails.md"
+    ]
+  }
+}

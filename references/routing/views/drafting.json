@@ -1,0 +1,465 @@
+{
+  "$schema": "https://local.invalid/cn-patent-case-workflow/view-route-1.0.schema.json",
+  "schema_version": "view-route-1.0",
+  "view": "drafting",
+  "allowed_domains": [
+    "mechanical",
+    "electronics",
+    "biochemical"
+  ],
+  "routes": [
+    {
+      "route_id_template": "drafting.stage1.{profile}.{phase}",
+      "submode": "stage1",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_01"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_01",
+      "read_profile": "drafting.stage1",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage1"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-02-through-09"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/derived/mbse"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage2.{profile}.{phase}",
+      "submode": "stage2",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_02"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_02",
+      "read_profile": "drafting.stage2",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage2"
+      ],
+      "forbidden_rule_groups": [
+        "views/oa",
+        "drafting/stages/stage-03-through-09"
+      ],
+      "required_any": [
+        "/derived/mbse",
+        "/derived/search"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage3.{profile}.{phase}",
+      "submode": "stage3",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_03"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_03",
+      "read_profile": "drafting.stage3",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage3",
+        "drafting.claim_contract"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/derived/mbse"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "drafting.stage3.claim_audit",
+          "trigger": {
+            "operation_in": [
+              "claim_text_audit",
+              "claim_audit",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要权利要求文本审计时加载。",
+          "rule_groups": [
+            "drafting.claim_audit"
+          ]
+        },
+        {
+          "id": "drafting.stage3.traceability",
+          "trigger": {
+            "operation_in": [
+              "traceability",
+              "support_traceability",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要 SupportLink、从属项或节点追溯时加载。",
+          "rule_groups": [
+            "drafting.traceability"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "drafting.stage1_stage3_claim_core.{profile}.{phase}",
+      "submode": "stage1_stage3_claim_core",
+      "profiles": [
+        "controlled"
+      ],
+      "phases": [
+        "stage_03"
+      ],
+      "default_profile": "controlled",
+      "default_phase": "stage_03",
+      "read_profile": "drafting.stage1_stage3_claim_core",
+      "rule_groups": [
+        "drafting.common_core",
+        "drafting.stage1",
+        "drafting.stage3",
+        "drafting.claim_contract"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-04-through-09"
+      ],
+      "required_any": [
+        "/normalized/technical_facts",
+        "/derived/mbse"
+      ],
+      "required_all": [],
+      "boundary": {
+        "stage2": "mocked_pass",
+        "allow_real_search": false,
+        "allow_oa": false,
+        "allow_legal_conclusion": false,
+        "release_grade_claim_text": false
+      },
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "drafting.stage1_stage3_claim_core.guardrails",
+          "trigger": {
+            "operation_in": [
+              "guardrails",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "受控模式默认只加载最小公共核心；仅在明确需要完整撰写防护规则时加载。",
+          "rule_groups": [
+            "drafting.guardrails"
+          ]
+        },
+        {
+          "id": "drafting.stage1_stage3_claim_core.claim_audit",
+          "trigger": {
+            "operation_in": [
+              "claim_text_audit",
+              "claim_audit",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要权利要求文本审计时加载。",
+          "rule_groups": [
+            "drafting.claim_audit"
+          ]
+        },
+        {
+          "id": "drafting.stage1_stage3_claim_core.traceability",
+          "trigger": {
+            "operation_in": [
+              "traceability",
+              "support_traceability",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要 SupportLink、从属项或节点追溯时加载。",
+          "rule_groups": [
+            "drafting.traceability"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "drafting.stage4.{profile}.{phase}",
+      "submode": "stage4",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_04"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_04",
+      "read_profile": "drafting.stage4",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage4"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-05-through-09"
+      ],
+      "required_any": [
+        "/derived/drafting",
+        "/normalized/technical_facts"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage5.{profile}.{phase}",
+      "submode": "stage5",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_05"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_05",
+      "read_profile": "drafting.stage5",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage5"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-06-through-09"
+      ],
+      "required_any": [
+        "/derived/drafting",
+        "/normalized/technical_facts"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage6.{profile}.{phase}",
+      "submode": "stage6",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_06"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_06",
+      "read_profile": "drafting.stage6",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage6"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-07-through-09"
+      ],
+      "required_any": [
+        "/derived/drafting"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage7.{profile}.{phase}",
+      "submode": "stage7",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_07"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_07",
+      "read_profile": "drafting.stage7",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage7"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-08-through-09"
+      ],
+      "required_any": [
+        "/derived/drafting"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    },
+    {
+      "route_id_template": "drafting.stage8.{profile}.{phase}",
+      "submode": "stage8",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_08"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_08",
+      "read_profile": "drafting.stage8",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage8"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "drafting/stages/stage-09"
+      ],
+      "required_any": [
+        "/derived/drafting",
+        "/normalized/claims"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": [
+        {
+          "id": "drafting.stage8.claim_audit",
+          "trigger": {
+            "operation_in": [
+              "claim_text_audit",
+              "claim_audit",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要权利要求文本审计时加载。",
+          "rule_groups": [
+            "drafting.claim_audit"
+          ]
+        },
+        {
+          "id": "drafting.stage8.traceability",
+          "trigger": {
+            "operation_in": [
+              "traceability",
+              "support_traceability",
+              "audit",
+              "review"
+            ]
+          },
+          "reason": "仅在当前操作需要 SupportLink、从属项或节点追溯时加载。",
+          "rule_groups": [
+            "drafting.traceability"
+          ]
+        }
+      ]
+    },
+    {
+      "route_id_template": "drafting.stage9.{profile}.{phase}",
+      "submode": "stage9",
+      "profiles": [
+        "standard"
+      ],
+      "phases": [
+        "stage_09"
+      ],
+      "default_profile": "standard",
+      "default_phase": "stage_09",
+      "read_profile": "drafting.stage9",
+      "rule_groups": [
+        "drafting.common",
+        "drafting.stage9"
+      ],
+      "forbidden_rule_groups": [
+        "views/search",
+        "views/oa",
+        "views/invalidity"
+      ],
+      "required_any": [
+        "/derived/drafting"
+      ],
+      "required_all": [],
+      "write_prefix": "/derived/drafting",
+      "validators": [
+        "validate_case_json.py",
+        "validate_view_patch.py",
+        "calculate_impact_set.py"
+      ],
+      "conditional_rule_files": []
+    }
+  ]
+}
